@@ -1,5 +1,11 @@
-import { useState } from "react"
-const useSelect = (label: String, opciones) => {
+import { useEffect, useState } from "react"
+
+interface ParamOpc {
+  id: string
+  nombre: string
+}
+
+const useSelect = (label: string, opciones: Array<ParamOpc>) => {
 
   const [state, setState] = useState('')
 
@@ -13,8 +19,8 @@ const useSelect = (label: String, opciones) => {
       >
         <option value="">- Seleccione -</option>
         {
-          opciones.map((opcion : object) => (
-            <option key={opcion.id} value={opcion.id}>
+          opciones?.map((opcion) => (
+            <option key={opcion.nombre} value={opcion.id}>
               {opcion.nombre}
             </option>
           ))}

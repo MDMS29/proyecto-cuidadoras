@@ -15,9 +15,8 @@ const InformacionPrincipal = () => {
     const [wifi, SelectWifi] = useSelect('Wifi', siNo)
 
     const [edad, setEdad] = useState('')
-
-    let fechaLimite = formatearFecha(Date())
-    fechaLimite = `${fechaLimite[2]}-${fechaLimite[1]}-${fechaLimite[0]}`
+    let fechaFormateada = formatearFecha(Date())
+    let fechaLimite = `${fechaFormateada[2]}-${fechaFormateada[1]}-${fechaFormateada[0]}`
 
 
     return (

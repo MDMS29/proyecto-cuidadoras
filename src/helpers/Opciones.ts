@@ -1,6 +1,6 @@
-export const siNo = [
-    { id: true, nombre: 'Si' },
-    { id: false, nombre: 'No' }
+export let siNo = [
+    { id: 'true', nombre: 'Si' },
+    { id: 'false', nombre: 'No' }
 ]
 
 export const tiposDocumentos = [
@@ -24,8 +24,8 @@ export const servicios = [
 ]
 
 export const asistencia = [
-    { id: true, nombre: 'Asistencia' },
-    { id: false, nombre: 'No' },
+    { id: 'true', nombre: 'Asistencia' },
+    { id: 'false', nombre: 'No' },
 ]
 
  
