@@ -1,8 +1,5 @@
-import React from 'react'
-
 import useSelect from '../hooks/useSelect'
 import { siNo, asistencia } from '../helpers/Opciones'
-
 
 const GradoAutonomia = () => {
 
