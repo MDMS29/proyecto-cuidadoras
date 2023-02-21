@@ -6,24 +6,26 @@ import FormularioPaciente from './pages/FormularioPaciente'
 import Home from './pages/Home'
 import Login from './pages/Login'
 
-// import { IngresoProvider } from './context/IngresoProvider'
+import { AuthProvider } from './context/AuthProvider'
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
+      <AuthProvider>
+        <Routes>
 
-        {/* RUTAS PUBLICAS */}
-        <Route path='/' element={<LayoutPublic />}>
-          <Route index element={<Login />} />
-        </Route>
+          {/* RUTAS PUBLICAS */}
+          <Route path='/' element={<LayoutPublic />}>
+            <Route index element={<Login />} />
+          </Route>
 
-        {/* RUTAS AUTORIZADAS */}
-        <Route path='/auth' element={<LayoutPrivate />}>
-          <Route path='home' element={<Home />} />
-          <Route path='formulario-paciente' element={<FormularioPaciente />} />
-        </Route>
-      </Routes>
+          {/* RUTAS AUTORIZADAS */}
+          <Route path='/auth' element={<LayoutPrivate />}>
+            <Route index element={<Home />} />
+            <Route path='formulario-paciente' element={<FormularioPaciente />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }
