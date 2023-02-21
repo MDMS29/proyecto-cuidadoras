@@ -15,16 +15,17 @@ export const AuthProvider = ({ children }: props) => {
 
     const navigate = useNavigate()
 
+    let token: any
+
     useEffect(() => {
         const autenticarUsuario = async () => {
             //Se extrae el JWT para aprobar el inicio de sesion.
-            const token = localStorage.getItem('token')
-
+            token = localStorage.getItem('token')
             if (!token) {
                 setCargando(false)
                 return
             }
-
+            
             //Bearer token y lo revisa en el checkout del backend.
             const config = {
                 headers: {
@@ -32,19 +33,23 @@ export const AuthProvider = ({ children }: props) => {
                     Authorization: `Bearer ${token}`
                 }
             }
-
+            
             try {
                 const { data } = await axios('http://localhost:4000/api/usuario/perfil', config)
+                console.log(data)
                 setAuth(data)
                 //Siempre que haya un token al iniciar, redireccionara a la pag principal.
-                navigate('/auth')
             } catch (error) {
                 setAuth({})
             }
             setCargando(false)
         }
         autenticarUsuario()
-        // console.log(auth)
+        if (token) {
+            navigate('/auth')
+        }else{
+            navigate('/')
+        }
     }, [])
 
     return (

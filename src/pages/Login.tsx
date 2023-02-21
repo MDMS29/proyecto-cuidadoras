@@ -16,11 +16,6 @@ const Login = () => {
 
     const navigate = useNavigate()
 
-
-    useEffect(() => {
-        console.log(auth)
-    }, [])
-
     const handleSubmit = async (e: any) => {
         e.preventDefault()
 
