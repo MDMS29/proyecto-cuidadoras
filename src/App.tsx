@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 
 import { AuthProvider } from './context/AuthProvider'
+import RegistroUsuario from './pages/RegistroUsuario'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           {/* RUTAS PUBLICAS */}
           <Route path='/' element={<LayoutPublic />}>
             <Route index element={<Login />} />
+            <Route path="registro" element={<RegistroUsuario />} />
           </Route>
 
           {/* RUTAS AUTORIZADAS */}

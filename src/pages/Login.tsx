@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import axios from "axios"
 
 import Swal from 'sweetalert2'
@@ -31,10 +31,16 @@ const Login = () => {
 
             //Validar informacion del BackEnd
             if (data.msg) {
+                
+                setUsuario('')
+                setContrasena('')
+                
                 return Swal.fire({
                     icon: 'error',
                     text: `${data.msg}`
                 })
+
+
             }
 
             //Guardamos el JWT para poder saber quien esta iniciando sesión.
@@ -71,6 +77,7 @@ const Login = () => {
                     <input type="text" className='placeholder:text-gray-400 bg-gray-50 w-11/12 px-2 py-2 outline-none focus:border-b focus:border-b-black focus:bg-gray-100 transition-all rounded-md' placeholder='Ingrese su contraseña' value={contrasena} onChange={(e: any) => setContrasena(e.target.value)} />
                 </div>
                 <input type='submit' value='Ingresar' className='w-56 bg-blue-500 hover:bg-blue-700 transition-colors text-white font-bold text-lg uppercase rounded px-2 py-1 cursor-pointer text-center' />
+                <Link to="/registro">Registro</Link>
             </form>
         </div>
     )
