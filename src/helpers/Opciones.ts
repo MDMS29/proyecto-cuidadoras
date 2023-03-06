@@ -8,7 +8,6 @@ export const tiposDocumentos = [
     { id: 'CC', nombre: 'Cédula de Ciudadanía' },
     { id: 'RC', nombre: 'Registro Civil' },
     { id: 'CE', nombre: 'Cédula de Extranjería' },
-    { id: 'NIP', nombre: 'Número de Identificación Personal' },
 ]
 
 export const genero = [
@@ -28,4 +27,12 @@ export const asistencia = [
     { id: 'false', nombre: 'No' },
 ]
 
- 
+export interface TablePaginationActionsProps {
+    count: number;
+    page: number;
+    rowsPerPage: number;
+    onPageChange: (
+        event: React.MouseEvent<HTMLButtonElement>,
+        newPage: number,
+    ) => void;
+}

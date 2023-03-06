@@ -10,14 +10,14 @@ const useSelect = (label: string, opciones: Array<ParamOpc>) => {
   const [state, setState] = useState('')
 
   const SelectOpciones = () => (
-    <>
-      <label className='font-semibold text-base block'>{label}</label>
+    <div>
+      <label className=' block'>{label}</label>
       <select
-        className="text-center font-normal w-full sm:w-11/12 text-lg my-2 bg-slate-50 py-2 px-2 rounded outline-none cursor-pointer"
+        className="text-center w-full text-lg my-2 bg-slate-50 py-2 px-2 rounded outline-none cursor-pointer"
         value={state}
-        onChange={(e) => setState(e.target.value)} //para que tome el valor que se seleccione
+        onChange={(e: any) => setState(e.target.value)} //para que tome el valor que se seleccione
       >
-        <option value="">- Seleccione -</option>
+        <option value="">-- Seleccione --</option>
         {
           opciones?.map((opcion) => (
             <option key={opcion.nombre} value={opcion.id}>
@@ -25,7 +25,7 @@ const useSelect = (label: string, opciones: Array<ParamOpc>) => {
             </option>
           ))}
       </select>
-    </>
+    </div>
   )
 
   return [state, SelectOpciones]

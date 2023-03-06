@@ -50,8 +50,6 @@ const GradoAutonomia = () => {
             <SelectProtesis />
           </div>
         </div>
-
-
       </div>
     </div>
   )

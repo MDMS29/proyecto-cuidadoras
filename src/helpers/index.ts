@@ -1,6 +1,6 @@
-export const formatearFecha = (fecha : string) =>{
+export const formatearFecha = (fecha: string) => {
     let fechaNueva = new Date(fecha)
-    const opciones : Object = {
+    const opciones: Object = {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
