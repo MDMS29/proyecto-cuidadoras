@@ -14,7 +14,7 @@ import ControlDeposicion from './components/ModalControlDeposicion'
 function App() {
   return (
     <BrowserRouter>
-      {/* <AuthProvider> */}
+      <AuthProvider> 
       <Routes>
 
         {/* RUTAS PUBLICAS */}
@@ -31,7 +31,7 @@ function App() {
           <Route path='control-deposicion/:id' element={<ControlDeposicion />} />
         </Route>
       </Routes>
-      {/* </AuthProvider> */}
+      </AuthProvider> 
     </BrowserRouter>
   )
 }
