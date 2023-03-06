@@ -1,10 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
-
 import Swal from 'sweetalert2'
-
 const RegistroUsuario = () => {
-
     const [nombre, setNombre] = useState('')
     const [apellido, setApellido] = useState('')
     const [tipoIdent, setTipoIdent] = useState('')
@@ -15,32 +12,31 @@ const RegistroUsuario = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-
         if ([nombre, apellido, tipoIdent, nIdent, tipoUsuario, contrasena, contrasenaConfirm].includes('')) {
             return Swal.fire({
                 icon: 'error',
                 text: '¡Debe llenar todos los campos!'
             })
         }
-
         if (contrasena != contrasenaConfirm) return Swal.fire({ icon: 'success', text: '¡Las contraseñas no coinciden!' })
-
         try {
             const { data } = await axios.post('http://localhost:4000/api/usuario/registrarUsuario', { nombre, apellido, tipoIdent, nIdent, tipoUsuario, contrasena })
-
-
-            return Swal.fire({
-                icon: 'success',
-                text: `${data.msg}`
-            })
-
+            if (data.msg) {
+                Swal.fire({ icon: 'success', text: `${data.msg}` })
+            } else if (data.msgEx) {
+                Swal.fire({ icon: 'error', text: `${data.msgEx}` })
+            }
+            setNombre('')
+            setApellido('')
+            setTipoIdent('')
+            setNIdent('')
+            setTipoUsuario('')
+            setContrasena('')
+            setContrasenaConfirm('')
         } catch (error) {
-            console.log(error)
-            return
+            return error;
         }
-
     }
-
     return (
         <div className='flex justify-center items-center h-[500px]'>
             <form onSubmit={handleSubmit} className='z-10 bg-white flex items-center flex-col w-3/4 max-w-[550px] gap-3 rounded-lg py-3 shadow-lg '>
@@ -63,7 +59,7 @@ const RegistroUsuario = () => {
                         <select id="tipoIdent" className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={tipoIdent || ""} onChange={(e: any) => setTipoIdent(e.target.value)}>
                             <option selected>-- Seleccione --</option>
                             <option value="CC">Cédula de Ciudadanía</option>
-                            <option value="CE">Canada</option>
+                            <option value="CE">Cédula de Extranjería</option>
                         </select>
                     </div>
                     <div className='block w-11/12 relative top-4'>

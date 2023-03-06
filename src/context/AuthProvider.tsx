@@ -21,6 +21,8 @@ export const AuthProvider = ({ children }: props) => {
         const autenticarUsuario = async () => {
             //Se extrae el JWT para aprobar el inicio de sesion.
             token = localStorage.getItem('token')
+            console.log(auth)
+
             if (!token) {
                 setCargando(false)
                 return
@@ -50,7 +52,7 @@ export const AuthProvider = ({ children }: props) => {
         }else{
             navigate('/')
         }
-    }, [])
+    }, [auth])
 
     return (
         <AuthContext.Provider value={{
