@@ -1,23 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import useSelect from '../hooks/useSelect'
 import { siNo, tiposDocumentos, genero, servicios } from '../helpers/Opciones'
 import { formatearFecha } from '../helpers/index'
+import { PacientesContext } from '../context/PacientesContext'
 
 const InformacionPrincipal = () => {
 
+    const { state, setState } = useContext(PacientesContext)
     //INPUTS
     const [entidadRemitente, InputEntRemi] = useState('')
-    const [nombres, InputNombres] = useState('')
-    const [apellidos, InputApellidos] = useState('')
-    const [numDoc, InputNumDoc] = useState('')
-    const [fechaNac, InputFechaNac] = useState('')
     const [edad, InputEdad] = useState('')
     const [diagnostico, InputDiag] = useState('')
-    const [fechaIng, InputFechaIng] = useState('')
-    const [direcc, InputDirecc] = useState('')
     const [barrio, InputBarrio] = useState('')
     const [tiempo, InputTiempo] = useState(0)
-    const [eps, InputEps] = useState('')
     const [servUrgen, InputServUrgen] = useState('')
     const [clinAds, InputClinAds] = useState('')
     const [medicTratan, InputMedicTratan] = useState('')
@@ -32,9 +27,7 @@ const InformacionPrincipal = () => {
     const [direccFam2, InputDireccFam2] = useState('')
 
     //SELECT
-    const [alergias, SelectAlergias] = useSelect('Alergias', siNo)
-    const [tipoDocumento, SelectTipoDocumento] = useSelect('Tipo de Documento', tiposDocumentos)
-    const [sexo, SelectGenero] = useSelect('Sexo', genero)
+    const [alergias, SelectAlergias] = useSelect('Alergias', siNo)  
     const [servicio, SelectServicio] = useSelect('Servicio solicitado', servicios)
 
     let fechaFormateada = formatearFecha(Date())
@@ -67,13 +60,13 @@ const InformacionPrincipal = () => {
             <div className='flex max-md:flex-wrap mt-4'>
                 <div className="relative z-0 mb-6 group flex items-center justify-center w-full">
                     <div className='block w-11/12 max-md:w-full'>
-                        <input type="text" name="Nombres" id="Nombres" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={nombres} onChange={(e: any) => InputNombres(e.target.value)} />
+                        <input type="text" name="Nombres" id="Nombres" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.nombres} onChange={(e: any) => setState({ ...state, nombres: e.target.value })} />
                         <label htmlFor="Nombres" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombres</label>
                     </div>
                 </div>
                 <div className="relative z-0 mb-6 group flex items-center justify-center w-full">
                     <div className='block w-11/12 max-md:w-full'>
-                        <input type="text" name="Apellidos" id="Apellidos" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={apellidos} onChange={(e: any) => InputApellidos(e.target.value)} />
+                        <input type="text" name="Apellidos" id="Apellidos" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.apellidos} onChange={(e: any) => setState({ ...state, apellidos: e.target.value })} />
                         <label htmlFor="Apellidos" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Apellidos</label>
                     </div>
                 </div>
@@ -81,12 +74,26 @@ const InformacionPrincipal = () => {
             {/* TIPO Y NUMERO DOCUMENTO*/}
             <div className='mt-4 w-full sm:flex sm:items-center'>
                 <div className='my-2 md:w-8/12 block justify-center w-full md:mr-10'>
-                    <SelectTipoDocumento />
+                    <div>
+                        <label className=' block'>Tipo de Documento</label>
+                        <select
+                            className="text-center w-full text-lg my-2 bg-slate-50 py-2 px-2 rounded outline-none cursor-pointer"
+                            value={state.tipoDoc} onChange={(e: any) => setState({ ...state, tipoDoc: e.target.value })}//para que tome el valor que se seleccione
+                        >
+                            <option value="">-- Seleccione --</option>
+                            {
+                                tiposDocumentos?.map((opcion) => (
+                                    <option key={opcion.nombre} value={opcion.id}>
+                                        {opcion.nombre}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
                 </div>
                 <div className='my-2 w-full lg:flex lg:justify-center'>
                     <div className="relative z-0 mb-6 group flex items-center w-full">
                         <div className='block lg:w-11/12 w-full'>
-                            <input type="number" name="NumDoc" id="NumDoc" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={numDoc} onChange={(e: any) => InputNumDoc(e.target.value)} />
+                            <input type="number" name="NumDoc" id="NumDoc" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.nIdent} onChange={(e: any) => setState({ ...state, nIdent: e.target.value })} />
                             <label htmlFor="NumDoc" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Numero de Documento</label>
                         </div>
                     </div>
@@ -96,14 +103,14 @@ const InformacionPrincipal = () => {
             <div className='my-4 w-full sm:flex sm:items-center'>
                 <div className="relative z-0 mb-6 group flex items-center w-full">
                     <div className='block lg:w-11/12 w-full'>
-                        <input type="date" name="fechaNac" max={fechaLimite} id="fechaNac" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={fechaNac} onChange={(e: any) => InputFechaNac(e.target.value)} />
+                        <input type="date" name="fechaNac" max={fechaLimite} id="fechaNac" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.fechaNac} onChange={(e: any) => setState({ ...state, fechaNac: e.target.value })} />
                         <label htmlFor="fechaNac" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Fecha de Nacimiento</label>
                     </div>
                 </div>
                 <div className='my-2 w-full lg:flex lg:justify-center'>
                     <div className="relative z-0 mb-6 group flex items-center w-full">
                         <div className='block lg:w-11/12 w-full'>
-                            <input type="text" name="NumDoc" id="NumDoc" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={edad} onChange={(e: any) => InputEdad(e.target.value)} />
+                            <input type="text" name="NumDoc" id="NumDoc" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.edad} onChange={(e: any) => setState({ ...state, edad: e.target.value })} />
                             <label htmlFor="NumDoc" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Edad</label>
                         </div>
                     </div>
@@ -112,12 +119,26 @@ const InformacionPrincipal = () => {
 
             <div className='my-4 w-full sm:flex sm:items-center'>
                 <div className='my-2 md:w-8/12 block justify-center w-full md:mr-10'>
-                    <SelectGenero />
+                <div>
+                        <label className=' block'>Genero</label>
+                        <select
+                            className="text-center w-full text-lg my-2 bg-slate-50 py-2 px-2 rounded outline-none cursor-pointer"
+                            value={state.sexo} onChange={(e: any) => setState({ ...state, sexo: e.target.value })}//para que tome el valor que se seleccione
+                        >
+                            <option value="">-- Seleccione --</option>
+                            {
+                                genero?.map((opcion) => (
+                                    <option key={opcion.nombre} value={opcion.id}>
+                                        {opcion.nombre}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
                 </div>
                 <div className='my-2 sm:w-full'>
                     <div className="relative z-0 mb-6 group flex items-center w-full">
                         <div className='block lg:w-11/12 w-full'>
-                            <input type="date" name="fechaIng" max={fechaLimite} id="fechaIng" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={fechaIng} onChange={(e: any) => InputFechaIng(e.target.value)} />
+                            <input type="date" name="fechaIng" max={fechaLimite} id="fechaIng" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.fechaIng} onChange={(e: any) => setState({ ...state, fechaIng: e.target.value })} />
                             <label htmlFor="fechaIng" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Fecha de Ingreso</label>
                         </div>
                     </div>
@@ -137,7 +158,7 @@ const InformacionPrincipal = () => {
                 <div className='my-2 w-full'>
                     <div className="relative z-0 mb-6 group flex items-center w-full">
                         <div className='block lg:w-11/12 w-full'>
-                            <input type="text" name="direcc" id="direcc" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={direcc} onChange={(e: any) => InputDirecc(e.target.value)} />
+                            <input type="text" name="direcc" id="direcc" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.direccion} onChange={(e: any) => setState({ ...state, direccion: e.target.value })} />
                             <label htmlFor="direcc" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dirección</label>
                         </div>
                     </div>
@@ -170,7 +191,7 @@ const InformacionPrincipal = () => {
                 <div className='my-2 w-full'>
                     <div className="relative z-0 mb-6 group flex items-center w-full">
                         <div className='block lg:w-11/12 w-full'>
-                            <input type="text" name="eps" id="eps" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={eps} onChange={(e: any) => InputEps(e.target.value)} />
+                            <input type="text" name="eps" id="eps" className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={state.eps} onChange={(e: any) => setState({ ...state, eps: e.target.value })} />
                             <label htmlFor="eps" className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]  peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">EPS</label>
                         </div>
                     </div>

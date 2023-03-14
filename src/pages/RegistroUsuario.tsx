@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { useState } from 'react'
 import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom'
+
 const RegistroUsuario = () => {
     const [nombre, setNombre] = useState('')
     const [apellido, setApellido] = useState('')
@@ -9,6 +11,8 @@ const RegistroUsuario = () => {
     const [tipoUsuario, setTipoUsuario] = useState('')
     const [contrasena, setContrasena] = useState('')
     const [contrasenaConfirm, setContrasenaConfirm] = useState('')
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -39,6 +43,13 @@ const RegistroUsuario = () => {
     }
     return (
         <div className='flex justify-center items-center h-[500px]'>
+            <button className='z-10 flex items-center bg-blue-500 hover:bg-blue-800 transition-colors text-white px-3 py-1 uppercase font-bold absolute left-10 top-14 rounded' type='button' onClick={() => navigate(-1)}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                </svg>
+
+               <p className='ml-2'>Volver</p>
+            </button>
             <form onSubmit={handleSubmit} className='z-10 bg-white flex items-center flex-col w-3/4 max-w-[550px] gap-3 rounded-lg py-3 shadow-lg '>
                 <h1 className='font-semibold text-4xl '>Registrar Usuario</h1>
 

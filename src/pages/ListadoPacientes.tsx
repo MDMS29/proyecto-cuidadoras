@@ -1,32 +1,69 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useContext, useState } from 'react'
+
+import PacienteListado from '../components/PacienteListado'
+import { PacientesContext } from '../context/PacientesContext'
+
+export interface IRegistroPaciente {
+    nombres: string
+    apellidos: string
+    tipoDoc: string
+    nIdent: string
+    fechaNac: string
+    edad: number
+    sexo: string
+    direccion: string
+    eps: string
+    fechaIng: string
+    fechaSali?: string
+}
 
 const ListadoPacientes = () => {
+
+    const { state, setState } = useContext(PacientesContext)
+
+
+    const [pacientes, setPacientes] = useState(state.pacientes)
+
     return (
-        <div>
-            <h1 className="p-5 text-xl font-semibold text-center  text-gray-900 bg-white mb-4">
-                Listado de Pacientes
+        <div className='flex flex-col z-10  bg-white' >
+            <h1 className="p-5 text-xl font-semibold text-center  text-gray-900 mb-4  hover:font-extrabold">
+                Consulta de Pacientes
             </h1>
 
-        
-            <div className="overflow-x-auto z-10 bg-white rounded-lg shadow overflow-y-auto ">
+            <div className="relative flex justify-end mr-5 mb-4 flex-wrap gap-3">
+                <div className='flex justify-end gap-3 items-center'>
+                    <label htmlFor="">Nombres</label>
+                    <input type="text" className="flex p-2 pl-4 mr-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Buscar por Nombre" />
+                </div>
+                <div className='flex justify-end gap-3 items-center'>
+                    <label htmlFor="">Apellidos</label>
+                    <input type="text" className="flex p-2 pl-4 mr-5 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Buscar por Apellido" />
+                </div>
+                <div className='flex justify-end gap-3 items-center'>
+                    <label htmlFor="">Fecha de Ingreso</label>
+                    <input type="date" className="flex p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " />
+                </div>
+                <div className='flex justify-end gap-3 items-center'>
+                    <label htmlFor="">Fecha de Salida</label>
+                    <input type="date" className="flex p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " />
+                </div>
+            </div>
+
+            <div className={`relative shadow-md max-md:overflow-x-scroll sm:rounded-lg`}>
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                #
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                N° Identificación
+                            </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Nombres
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Apellidos
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Edad
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Sexo
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                EPS
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Fecha Ingreso
@@ -35,58 +72,25 @@ const ListadoPacientes = () => {
                                 Fecha Salida
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
-                                Opciones
+                                Sexo
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                EPS
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                Acciones
                             </th>
                         </tr>
                     </thead>
-                    <tbody className='text-base'>
-                        
-
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td className="px-6 py-4 text-center whitespace-nowrap dark:text-white">
-                                Jose Francisco
-                            </td>
-                            <td className="px-6 py-4 text-center">
-                                Torres Rodriguez
-                            </td>
-                            <td className="px-6 py-4 text-center ">
-                                {`${56} años`}
-                            </td>
-                            <td className="px-6 py-4 text-center ">
-                                M
-                            </td>
-                            <td className="px-6 py-4 text-center">
-                                SURA
-                            </td>
-                            <td className="px-6 py-4 text-center">
-                                01 - 03 - 2023
-                            </td>
-                            <td className="px-6 py-4 text-center">
-                                06 - 03 - 2023
-                            </td>
-                            <td className="px-6 py-4">
-                                <details>
-                                    <summary className='flex hover:cursor-pointer px-4 py-2'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                        </svg> Más
-                                    </summary>
-                                    <div className='absolute z-10 bg-white px-6 py-3 border flex flex-col'>
-                                        <a href="">Editar</a>
-                                        <a href="">Evolución</a>
-                                        <Link to="/auth/control-deposicion/8">Control Deposición</Link>
-                                        <a href="">Inventario</a>
-                                    </div>
-                                </details>
-
-                            </td>
-                        </tr>
-                        
-
+                    <tbody>
+                        {pacientes.map(paciente => (
+                            <PacienteListado key={paciente.idpaciente} paciente={paciente} />
+                        ))}
                     </tbody>
                 </table>
             </div>
-        </div>
+
+        </div >
     )
 }
 

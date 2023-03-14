@@ -8,7 +8,7 @@ import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
 
-    const { auth, setAuth } = useContext(AuthContext)
+    const { state, setState } = useContext(AuthContext)
 
 
     const [nIdent, setNIdent] = useState('')
@@ -29,13 +29,14 @@ const Login = () => {
         try {
             const { data } = await axios.post('http://localhost:4000/api/usuario/login', { nIdent, contrasena })
             if (data.msgNoEx) {
-                Swal.fire({ icon: 'error', text: `${data.msgNoEx}` })
                 setNIdent('')
+                setContrasena('')
+                return Swal.fire({ icon: 'error', text: `${data.msgNoEx}` })
             }
 
             localStorage.setItem('token', data.token)
 
-            setAuth(data)
+            setState({ ...state, auth: data })
 
             navigate('/auth')
 

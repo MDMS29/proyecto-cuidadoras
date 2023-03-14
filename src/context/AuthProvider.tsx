@@ -1,62 +1,66 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { AuthContext } from './AuthContext'
+import { AuthContext, AuthContextProps } from './AuthContext'
 
 import axios from 'axios'
-
 interface props {
     children: JSX.Element | JSX.Element[]
 }
 
 export const AuthProvider = ({ children }: props) => {
 
-    const [auth, setAuth] = useState({})
-    const [cargando, setCargando] = useState({})
+    const [state, setState] = useState<AuthContextProps>({
+        auth: {
+            idusuario: 0,
+            nombre: '',
+            apellido: '',
+            tipo_ident: '',
+            n_identificacion: '',
+            tipo_usuario: ''
+        }
+    })
 
     const navigate = useNavigate()
-
     let token: any
-
     useEffect(() => {
         const autenticarUsuario = async () => {
-            //Se extrae el JWT para aprobar el inicio de sesion.
             token = localStorage.getItem('token')
-            console.log(auth)
-
             if (!token) {
-                setCargando(false)
                 return
             }
-            
-            //Bearer token y lo revisa en el checkout del backend.
             const config = {
                 headers: {
                     "Content-Type": "apllication/json",
                     Authorization: `Bearer ${token}`
                 }
             }
-            
             try {
                 const { data } = await axios('http://localhost:4000/api/usuario/perfil', config)
-                console.log(data)
-                setAuth(data)
-                //Siempre que haya un token al iniciar, redireccionara a la pag principal.
+                setState({ ...state, auth: data })
             } catch (error) {
-                setAuth({})
+                setState({
+                    ...state, auth: {
+                        idusuario: 0,
+                        nombre: '',
+                        apellido: '',
+                        tipo_ident: '',
+                        n_identificacion: '',
+                        tipo_usuario: ''
+                    }
+                })
             }
-            setCargando(false)
         }
         autenticarUsuario()
         if (token) {
             navigate('/auth')
-        }else{
+        } else {
             navigate('/')
         }
-    }, [auth])
+    }, [])
 
     return (
         <AuthContext.Provider value={{
-            auth, setAuth
+            state, setState
         }}>
             {children}
         </AuthContext.Provider>
